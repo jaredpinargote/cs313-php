@@ -1,0 +1,48 @@
+body {
+    font: 20px Montserrat, sans-serif;
+    padding-top: 54px;
+    background-color: #474e5d; 
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+ 
+.portfolio-item {
+  margin-bottom: 30px;
+}
+
+.pagination {
+  margin-bottom: 30px;
+}
+
+.row {
+  font: 12px Montserrat, sans-serif;
+}
+
+#content{
+    background-color: white;
+    padding: 20px 30px 20px 30px;
+}
+
+.catalog-img{
+    height: 200px;
+}
+
+.checkout-img{
+  height: 50px;
+}
+
+#icon{
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+  width: 25x;
+  height: 25px;
+  object-fit: contain;
+}
+
+.item{
+  margin-left: 30px;
+}
