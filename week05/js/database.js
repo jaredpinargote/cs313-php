@@ -15,6 +15,8 @@ $(document).ready(function(){
             var json = JSON.parse(parseable);
             console.log(json);
             $("#viewPlayersList").append("<li>"+json.name+"</li>")
+        } else {
+            console.log(event.data);
         }
     };
     $("button#test").click(function(){
