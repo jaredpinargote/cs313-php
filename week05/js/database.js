@@ -8,7 +8,7 @@ $(document).ready(function(){
         console.log("not supporeted :(");
     }
     source.onmessage = function(event) {
-        if(event.data != ""){
+        if(event.data != 'wait'){
             console.log(event.data);
             $("#result").append(event.data + "<br>");
             var parseable = event.data.substring(1, event.data.length-1);

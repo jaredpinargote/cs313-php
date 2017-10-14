@@ -54,7 +54,7 @@ while (1) {
         echo "id: $inc\ndata: ".stripslashes(json_encode($result['payload']))."\n\n";
         $inc++;
   } else {
-        echo "id: $inc\ndata:\n\n";
+        echo "id: $inc\ndata:wait\n\n";
   }
 
   flush();
