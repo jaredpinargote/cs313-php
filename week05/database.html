@@ -51,11 +51,6 @@
             <div class="container" id='display'></div>
         </div>
         <hr>
-        <div class="container" id="sseTest">
-            <h2>SSE Test</h2>
-            <div class="container" id="result"></div>
-        </div>
-        <hr>
         <div class="container" id="createNewPlayer">
             <h2>Create New Player And Join Game</h2>
             <p>PC: Player enters room code and user name, submits, and recieves confirmation they are in. Cookie is set with playerID. Server sends eventAlert to MGC to display new player</p>
@@ -100,8 +95,22 @@
         <div class="container" id="viewDrawing">
             <h2>View Submitted Drawing From This Game and Player</h2>
             <button class="btn btn-success" id="viewDrawing">View</button>
-            <p id="viewResult">Drawing:<br></p>
-            <p id="viewPlayerName">Author:<br></p>
+            <div class="container" id="viewResult"></div>
+        </div>
+        <hr>
+        <div class="container" id="createNewCaption">
+            <h2>Create New Caption as Player</h2>
+            <!-- <p>PC: Player enters room code and user name, submits, and recieves confirmation they are in. Cookie is set with playerID. Server sends eventAlert to MGC to display new player</p> -->
+            <label for="caption">Caption:</label>
+            <input type="text" class="form-control" id="caption" placeholder="Caption">
+            <button class="btn btn-success" id="newCaption">Submit</button>
+            <!-- <div class="container" id="playerInsertResult"></div> -->
+        </div>
+        <hr>
+        <div class="container" id="viewGameCaptions">
+            <h2>View all captions from this game</h2>
+            <button class="btn" id="viewCaptions">View</button>
+            <div class="container" id="viewCaptionResult"></div>
         </div>
         <hr>
     </div>

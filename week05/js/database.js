@@ -1,18 +1,6 @@
 $(document).ready(function(){
     console.log("Ready");
     init();
-    // source.onmessage = function(event) {
-    //     if(event.data != 'wait'){
-    //         console.log(event.data);
-    //         $("#result").append(event.data + "<br>");
-    //         var parseable = event.data.substring(1, event.data.length-1);
-    //         var json = JSON.parse(parseable);
-    //         console.log(json);
-    //         $("#viewPlayersList").append("<li>"+json.name+"</li>")
-    //     } else {
-    //         console.log(event.data);
-    //     }
-    // };
     function checkForNewPlayers() {
         var gid = localStorage.gameID;
         $.get("playersInGame.php?gameID="+gid, function(data, status){
@@ -70,7 +58,7 @@ $(document).ready(function(){
     });
     $("button#viewLSV").click(function(){
         $.each(localStorage, function( index, value ) {
-            $("#viewLSVList").append("<li>"+index+":"+value+"</li>");
+            $("#viewLSVList").append("<li>"+index+": "+value+"</li>");
         });
     });
     $("button#newDrawing").click(function(){
@@ -93,6 +81,60 @@ $(document).ready(function(){
             "Player ID: " + localStorage.playerID + "<br>" +
             "Game ID: " + localStorage.gameID + "<br>" +
             "Data: " + dataURL
-        )
+        );
+    });
+    $("button#viewDrawing").click(function(){
+        var playerID = localStorage.playerID;
+        var gameID = localStorage.gameID;
+        var request = "drawingIDs.php?playerID=" + playerID
+                        + "&gameID=" + gameID;
+        $("#viewResult").html("Drawing:<br>");
+        $.get(request, function(data, status){
+            // var obj = $.parseJSON(data);
+            // console.log("Drawing IDs: "+data);
+            $.each(data, function( index, id ) {
+                console.log("Running ID " + id);
+                var img = $("<img />").attr('src', 'viewdrawing.php?drawingID='+id)
+                .on('load', function() {
+                    if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                        console.log('broken image!');
+                    } else {
+                        // console.log("appending image with id " + id);
+                        $("#viewResult").append(img);
+                    }
+                });
+                // $("#viewLSVList").append("<li>"+index+": "+value+"</li>");
+            });
+        });
+    });
+    $("button#newCaption").click(function(){
+        var cap = $("#caption").val();
+        $.ajax({
+            type: "POST",
+            url: "newCaption.php",
+            data: { 
+                playerID: localStorage.playerID,
+                gameID: localStorage.gameID,
+                caption: cap,
+            }
+        }).done(function(data) {
+            console.log(data['message']); 
+        });
+    });
+    $("button#viewCaptions").click(function(){
+        var gameID = localStorage.gameID;
+        var request = "gameCaptions.php?gameID=" + gameID;
+        // $("#viewResult").html("Drawing:<br>");
+        $.get(request, function(data, status){
+            // var obj = $.parseJSON(data);
+            console.log("Captions: "+data);
+            $.each(data, function( index, json ) {
+                console.log("Json? " + json);
+                $.each(json, function( index, value ) {
+                    console.log(index + ": " + value);
+                });
+                $("#viewCaptionResult").append(json.caption + "<br>");
+            });
+        });
     });
 });
