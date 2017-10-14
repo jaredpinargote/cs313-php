@@ -1,24 +1,35 @@
 $(document).ready(function(){
-    console.log("Rdy!!!");
+    console.log("Ready");
     init();
-    var source = new EventSource("eventTest.php");
-    if(typeof(EventSource) !== "undefined") {
-        console.log("Supported!!");
-    } else {
-        console.log("not supporeted :(");
+    // source.onmessage = function(event) {
+    //     if(event.data != 'wait'){
+    //         console.log(event.data);
+    //         $("#result").append(event.data + "<br>");
+    //         var parseable = event.data.substring(1, event.data.length-1);
+    //         var json = JSON.parse(parseable);
+    //         console.log(json);
+    //         $("#viewPlayersList").append("<li>"+json.name+"</li>")
+    //     } else {
+    //         console.log(event.data);
+    //     }
+    // };
+    function checkForNewPlayers() {
+        var gid = localStorage.gameID;
+        $.get("playersInGame.php?gameID="+gid, function(data, status){
+            // viewPlayersList
+            // console.log(data);
+            // var json = $.parseJSON(data);
+            var players = "";
+            $.each(data, function(id, name){
+                if(name != undefined)
+                    players += "<li>"+name+"</li>";
+            })
+            $("#viewPlayersList").html(players);
+        });
     }
-    source.onmessage = function(event) {
-        if(event.data != 'wait'){
-            console.log(event.data);
-            $("#result").append(event.data + "<br>");
-            var parseable = event.data.substring(1, event.data.length-1);
-            var json = JSON.parse(parseable);
-            console.log(json);
-            $("#viewPlayersList").append("<li>"+json.name+"</li>")
-        } else {
-            console.log(event.data);
-        }
-    };
+    $(function () {
+        setInterval(checkForNewPlayers, 5000);
+    });
     $("button#test").click(function(){
         $.get("gameManager.php", function(data, status){
             var obj = $.parseJSON(data);

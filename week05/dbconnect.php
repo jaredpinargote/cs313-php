@@ -8,8 +8,6 @@ if (empty($dbUrl)) {
 
 $dbopts = parse_url($dbUrl);
 
-// print "<p>$dbUrl</p>\n\n";
-
 $dbHost = $dbopts["host"];
 $dbUser = $dbopts["user"];
 $dbPassword = $dbopts["pass"];
@@ -19,9 +17,7 @@ if(isset($dbopts["port"]) === true && $dbopts["port"] === ''){
     $dbPort = $dbopts["port"];
     $dbstring = "host=$dbHost dbname=$dbName user=$dbUser password=$dbPassword port=$dbPort";
 } else {
-    error_log("Port NOT specified ");
     $dbstring = "host=$dbHost dbname=$dbName user=$dbUser password=$dbPassword";
-    error_log("DB STRING:" . $dbstring);
 }
 
 try {
