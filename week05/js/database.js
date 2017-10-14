@@ -8,11 +8,14 @@ $(document).ready(function(){
         console.log("not supporeted :(");
     }
     source.onmessage = function(event) {
-        $("#result").append(event.data + "<br>");
-        var parseable = event.data.substring(1, event.data.length-1);
-        var json = JSON.parse(parseable);
-        console.log(json);
-        $("#viewPlayersList").append("<li>"+json.name+"</li>")
+        if(event.data != ""){
+            console.log(event.data);
+            $("#result").append(event.data + "<br>");
+            var parseable = event.data.substring(1, event.data.length-1);
+            var json = JSON.parse(parseable);
+            console.log(json);
+            $("#viewPlayersList").append("<li>"+json.name+"</li>")
+        }
     };
     $("button#test").click(function(){
         $.get("gameManager.php", function(data, status){
