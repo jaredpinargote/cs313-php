@@ -94,7 +94,7 @@ $(document).ready(function(){
             // console.log("Drawing IDs: "+data);
             $.each(data, function( index, id ) {
                 console.log("Running ID " + id);
-                var img = $("<img />").attr('src', 'viewdrawing.php?drawingID='+id)
+                var img = $("<img />").attr('src', 'viewDrawing.php?drawingID='+id)
                 .on('load', function() {
                     if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
                         console.log('broken image!');
