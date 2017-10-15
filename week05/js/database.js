@@ -4,9 +4,6 @@ $(document).ready(function(){
     function checkForNewPlayers() {
         var gid = localStorage.gameID;
         $.get("playersInGame.php?gameID="+gid, function(data, status){
-            // viewPlayersList
-            // console.log(data);
-            // var json = $.parseJSON(data);
             var players = "";
             $.each(data, function(id, name){
                 if(name != undefined)
@@ -27,9 +24,7 @@ $(document).ready(function(){
     $("button#newGame").click(function(){
         console.log("Getting...!");
         $.get("newGame.php", function(data, status){
-            // var obj = $.parseJSON(data);
             console.log("Data:"+data['gameID']);
-            // var obj = $.parseJSON(data);
             $('#display').html("Game ID: " + data['gameID']
                 + " Room Code: " + data['roomCode']);
             $('#viewPlayersRoomCode').html("Room Code: "
@@ -124,7 +119,8 @@ $(document).ready(function(){
     $("button#viewCaptions").click(function(){
         var gameID = localStorage.gameID;
         var request = "gameCaptions.php?gameID=" + gameID;
-        // $("#viewResult").html("Drawing:<br>");
+        var results = "";
+        // $("#viewCaptionResult").html("");
         $.get(request, function(data, status){
             // var obj = $.parseJSON(data);
             console.log("Captions: "+data);
@@ -133,8 +129,73 @@ $(document).ready(function(){
                 $.each(json, function( index, value ) {
                     console.log(index + ": " + value);
                 });
-                $("#viewCaptionResult").append(json.caption + "<br>");
+                results += json.name + " wrote: " + json.caption + "<br>";
             });
+            $("#viewCaptionResult").html(results);
+        });
+    });
+    $("button#viewComboOptions").click(function(){
+        var gameID = localStorage.gameID;
+        var request = "gameComboOptions.php?gameID=" + gameID;
+        var results = "";
+        // $("#viewCaptionResult").html("");
+        $.get(request, function(data, status){
+            // var obj = $.parseJSON(data);
+            console.log("Drawings: "+data.drawingIDs);
+            console.log("Captions: "+data.captionIDs);
+            var results = "";
+            $.each(data, function( index, json ) {
+                console.log("Json? " + json);
+                results += index + ":<br>";
+                $.each(json, function( index, value ) {
+                    console.log(index + ": " + value.id);
+                    results += value.id + "<br>";
+                });
+            });
+            $("#viewComboOptionResult").html(results);
+        });
+    });
+    $("button#newCombo").click(function(){
+        console.log("New Combo...!");
+        var drawingID = $("#drawingID").val();
+        var captionID = $("#captionID").val();
+        var playerID = localStorage.playerID;
+        var gameID = localStorage.gameID;
+        var request = "newCombo.php?drawingID=" + drawingID
+                        + "&captionID=" + captionID
+                        + "&playerID=" + playerID
+                        + "&gameID=" + gameID;
+        $.get(request, function(data, status){
+            console.log("Message:"+data['message']);
+            console.log("ComboID:"+data['comboID']);
+            localStorage.comboID = data['comboID'];
+        });
+    });
+    $("button#viewCombos").click(function(){
+        // console.log("New Combo...!");
+        var request = "viewGameCombos.php?gameID=" + localStorage.gameID;
+        $.get(request, function(data, status){
+            console.log("Combos:"+data);
+            $.each(data, function( index, combo ) {
+                // viewCombosResult
+                var img = $("<img />").attr('src', 'viewDrawing.php?drawingID='+combo.drawingID)
+                .on('load', function() {
+                    if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+                        console.log('broken image!');
+                    } else {
+                        // console.log("appending image with id " + id);
+                        $("#viewCombosResult").append(img);
+                        $("#viewCombosResult").append("<br>Caption: " + combo.caption);
+                        $("#viewCombosResult").append("<br>Drawing creator: " + combo.drawingPlayerName);
+                        $("#viewCombosResult").append("<br>Caption creator: " + combo.captionPlayerName);
+                        $("#viewCombosResult").append("<br>Combo Creator: " + combo.comboPlayerName + "<br><br>");
+                    }
+                });
+            });
+            // $('#comboInsertResult').html("Player ID: " + data['id']
+            //     + " Combo ID: " + data['gameID']);
+            // localStorage.playerID = data['id'];
+            // localStorage.playerName = data['name']
         });
     });
 });
