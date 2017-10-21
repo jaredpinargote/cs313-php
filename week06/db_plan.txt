@@ -1,0 +1,146 @@
+Read!!!
+    Game
+        Game Id
+        Room Code
+    Player
+        Id
+        name
+    Drawing
+        Show Drawing!
+    Captions    
+        Show caption and who made it
+    Combos
+        show drawing, caption, and combiner
+    
+
+Desktop Client
+    Create Room
+        S: INSERT INTO GAMES (NEXT, 0, NULL, NULL)
+    Wait for players
+    Listen for nextStage event
+        Player selects start game
+    ***NEXT -1- STAGE***
+    Explain Drawing stage
+    Listen for nextStage event
+        Player selects "OK!"
+    ***NEXT -2- STAGE***
+    Let Players draw 2 drawings in 3 mins
+    Countdown
+    Broadcast Server Signal to end draw time
+    ***NEXT -3- STAGE***
+    Let Players create many captions for 3 mins
+    Countdown
+    Broadcast Server Signal to end caption time
+    ***NEXT -4- STAGE***
+    Let Players create 2 combos for 1.5 mins
+    Countdown
+    Broadcast Server Signal to end combo time
+    ***NEXT -5- STAGE***
+    Display 2 diff player combos (if available)
+    Let players vote for 60 secs
+    Countdown
+    Broadcast Server Signal to end vote time
+        if timer out
+        if all votes in
+    Winner combo next round
+    REPEAT STAGE UNTIL WINNER
+    ***NEXT -6- STAGE***
+    Display winnner combo / players
+    Ask to play again
+
+Mobile Client
+    Sign in to game using Room Code / Player name
+        POST['roomCode','playerName']
+        S: SELECT gameID FROM Games WHERE roomCode=$roomCode
+        S: INSERT INTO Players (NEXT, 'playerName', gameID)
+        S: UPDATE Games playerNumber++
+        cookie['gameID'] <- S
+        cookie['playerID'] <- S
+        cookie['playerName'] <- S
+    Listen for nextStage event
+        Button to start game
+            POST['stage0'] = true -> S
+            S: Broadcast 'stage1'
+    ***NEXT -1- STAGE***
+    Explained Drawing stage
+    Listen for nextStage event
+        Button "OK!"
+            POST['stage1'] = true -> S
+            S: Broadcast 'stage2'
+    ***NEXT -2- STAGE***
+    Let Players draw 2 drawings in 3 mins
+    Drawing Canvas
+        BW, standard brush
+    Submit
+        Saves PNG -> Server
+        POST['png', 'playerID', 'gameID']
+        S: INSERT INTO DRAWINGS (NEXT, location, 'playerID', 'gameID')
+        Clear Canvas
+    Listen for Server Signal to end draw time
+    ***NEXT -3- STAGE***
+    Let Players create many captions for 3 mins
+    Text input
+    Submit
+        POST['caption', 'playerID', 'gameID']
+        S: INSERT INTO CAPTIONS (NEXT, caption, 'playerID', 'gameID')
+        Clear Canvas
+    Listen for Server Signal to end caption time
+    ***NEXT -4- STAGE***
+    Let Players create 2 combos for 1.5 mins
+        S: SELECT 3 random FROM DRAWINGS
+        S: SELECT 3 random FROM CAPTIONS
+        drawings <- S
+        captions <- S
+    Submit
+        POST['caption', 'playerID', 'gameID']
+        S: INSERT INTO COMBOS (NEXT, 'drawingID', 'captionID', 'playerID', 'gameID')
+        Clear Options selected
+    Listen for Server Signal to end combo time
+    ***NEXT -5- STAGE***
+    Display 2 diff player combos (if available)
+        S: SELECT 2 random FROM COMBOS 
+    Let players vote for 60 secs
+        selection id <- S
+        POST['selectionID'] -> S
+    Listen for Server Signal to end vote time
+    Winner combo next round
+    REPEAT STAGE UNTIL WINNER
+    ***NEXT -6- STAGE***
+    Display winnner combo / players
+    Ask to play again
+
+Games
+id (INT)
+playerNum (INT)
+startDateTime (D.T.)
+endDateTime (D.T.)
+
+Players
+id (INT)
+name (STRING)
+gameID (INT) FK
+
+Drawings
+id (INT)
+drawing (BLOB)
+playerID (INT) FK
+gameID (INT) FK
+
+Captions
+id (INT)
+caption (STRING)
+playerID (INT) FK
+gameID (INT) FK
+
+Combos
+id (INT)
+gameID (INT) FK
+drawingID (INT) FK
+captionID (INT) FK
+playerID (INT) FK
+defeated (BOOL)
+
+RoomCodes
+Id(INT)
+roomCode (STRING)
+gameID (INT) FK

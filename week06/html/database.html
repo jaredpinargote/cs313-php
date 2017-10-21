@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Assignments | Jared Pinargote</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="css/05.css" rel="stylesheet">
+    <script src="js/database.js"></script>
+    <script src="js/draw.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Jared Pinargote</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="assignments.html">Assignments
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Page Content -->
+    <div class="container" style="background-color:white;">
+        <div class="container" id="createNewGame">
+            <p><em>MGC: Main Game Client, The client that creates the game, displays instructions, provides countdown timer, displays drawings/captions/combos, and displays winner. Ideally would be hooked up to a TV for a game.</em></p>
+            <p><em>PC: Player Client, The client that a player would use to join a game, submit drawings/captions/combos and vote on the best ones</em></p>
+            <h2>Create New Game</h2>
+            <p>MGC: Creates a new game by sending a GET request. Gets the newly created game ID and room code, saves game ID as cookie, displays room code</p>
+            <button id="newGame" class="btn">New Game</button>
+            <div class="container" id='display'></div>
+        </div>
+        <hr>
+        <div class="container" id="createNewPlayer">
+            <h2>Create New Player And Join Game</h2>
+            <p>PC: Player enters room code and user name, submits, and recieves confirmation they are in. Cookie is set with playerID. Server sends eventAlert to MGC to display new player</p>
+            <label for="playerName">User Name:</label>
+            <input type="text" class="form-control" id="playerName" placeholder="User Name">
+            <label for="roomCode">Room Code:</label>
+            <input type="text" class="form-control" id="roomCode" placeholder="Room Code (eg: XTVF)">
+            <button class="btn btn-success" id="newPlayer">Submit</button>
+            <div class="container" id="playerInsertResult"></div>
+        </div>
+        <hr>
+        <div class="container" id="viewPlayers">
+            <h2>View Players in game</h2>
+            <p>MGC: Player enters room code and user name, submits, and recieves confirmation they are in. Cookie is set with playerID.</p>
+            <p id="viewPlayersRoomCode"></p>
+            <ol id="viewPlayersList"></ol>
+        </div>
+        <hr>
+        <div class="container" id="viewLocalStorage">
+            <h2>View Local Storage Variables</h2>
+            <p>MGC and PC: LSV used to keep client on track with session. Changes on new game</p>
+            <button class="btn" id="viewLSV">View LSVs</button>
+            <ol id="viewLSVList"></ol>
+        </div>
+        <hr>
+        <div class="container" id="createNewDrawing">
+            <h2>Create/Submit New Drawing</h2>
+            <div class="container">
+                 <input type="submit" class="btn" value="Clear Sketchpad" onclick="clearCanvas(canvas,ctx);">
+            </div>
+            <div id="drawCanvas">
+                <canvas id="sketchpad" height="500" width="500" style="border:1px solid #000;">
+                    Sorry, your browser does not work with this game.
+                </canvas>
+                <br>
+                <button class="btn" id="checkDrawVals">Check Drawing Submission Values</button>
+                <button class="btn btn-success" id="newDrawing">Submit</button>
+                <div class="container" style="overflow-wrap:break-word;font-size:10%;" id="drawValsOutput"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="container" id="viewDrawing">
+            <h2>View Submitted Drawing From This Game and Player</h2>
+            <button class="btn btn-success" id="viewDrawing">View</button>
+            <div class="container" id="viewResult"></div>
+        </div>
+        <hr>
+        <div class="container" id="createNewCaption">
+            <h2>Create New Caption as Player</h2>
+            <!-- <p>PC: Player enters room code and user name, submits, and recieves confirmation they are in. Cookie is set with playerID. Server sends eventAlert to MGC to display new player</p> -->
+            <label for="caption">Caption:</label>
+            <input type="text" class="form-control" id="caption" placeholder="Caption">
+            <button class="btn btn-success" id="newCaption">Submit</button>
+            <!-- <div class="container" id="playerInsertResult"></div> -->
+        </div>
+        <hr>
+        <div class="container" id="viewGameCaptions">
+            <h2>View all captions from this game</h2>
+            <button class="btn" id="viewCaptions">View</button>
+            <div class="container" id="viewCaptionResult"></div>
+        </div>
+        <hr>
+        <div class="container" id="createCombo">
+            <h2>Create a combination from the drawings and captions of the game</h2>
+            <button class="btn" id="viewComboOptions">View Options</button>
+            <div class="container" id="viewComboOptionResult"></div>
+            <label for="drawingID">Drawing ID:</label>
+            <input type="text" class="form-control" id="drawingID" placeholder="Drawing ID">
+            <label for="captionID">Caption ID:</label>
+            <input type="text" class="form-control" id="captionID" placeholder="Caption ID">
+            <button class="btn btn-success" id="newCombo">Submit</button>
+            <div class="container" id="comboInsertResult"></div>
+        </div>
+        <hr>
+        <div class="container" id="viewGameCombos">
+            <h2>View game combos</h2>
+            <button class="btn" id="viewCombos">View</button>
+            <div class="container" id="viewCombosResult"></div>
+        </div>
+        <hr>
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Jared Pinargote 2017</p>
+      </div>
+    </footer>
+
+  </body>
+
+</html>
