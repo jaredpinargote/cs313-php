@@ -6,7 +6,8 @@ $captions = "public.\"Captions\"";
 $players = "public.\"Players\""; 
 
 $result = pg_query_params($conn,
-"SELECT 
+"SELECT
+    c.id AS id,
     c.caption AS caption, 
     p.name AS name
  FROM $captions c JOIN $players p

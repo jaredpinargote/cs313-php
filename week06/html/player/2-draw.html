@@ -17,6 +17,7 @@
     init();
     $("button#newDrawing").click(function(){
         var dataURL = document.getElementById("sketchpad").toDataURL();
+        clearCanvas(canvas,ctx);
         $.ajax({
             type: "POST",
             url: "../../newDrawing.php",
@@ -26,10 +27,10 @@
                 gameID: localStorage.gameID
             }
         }).done(function(data) {
-            console.log(data['message']); 
+            console.log(data['message']);
         });
     });
-    var count=5;
+    var count=90;
     var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer()
     {
